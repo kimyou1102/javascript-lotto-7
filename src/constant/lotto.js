@@ -5,3 +5,11 @@ export const lottoPrize = {
   4: { matchCount: 4, prize: 50000 },
   5: { matchCount: 3, prize: 5000 },
 };
+
+export const lottoRank = {
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
+};
