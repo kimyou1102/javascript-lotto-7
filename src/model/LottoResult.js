@@ -1,4 +1,4 @@
-import { lottoRank } from '../constant/lotto';
+import { lottoRank } from '../constant/lotto.js';
 
 export default class LottoResult {
   constructor(winningNumber, bonusNumber, lottos) {

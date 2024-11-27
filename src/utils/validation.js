@@ -1,5 +1,5 @@
-import { ERROR_MESSAGES } from '../constant/message';
-import { createError } from './createError';
+import { ERROR_MESSAGES } from '../constant/message.js';
+import { createError } from './createError.js';
 
 export const validatePaidMoney = (input) => {
   checkNumber(input, ERROR_MESSAGES.PURCHASE_PRICE.NOT_A_NUMBER);

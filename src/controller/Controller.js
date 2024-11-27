@@ -1,7 +1,7 @@
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange.js';
-import Lotto from '../Lotto';
+import Lotto from '../Lotto.js';
 import { lottoPrize } from '../constant/lotto.js';
 import LottoResult from '../model/LottoResult.js';
 import ProfitRate from '../model/ProfitRate.js';
