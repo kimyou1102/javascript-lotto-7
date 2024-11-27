@@ -4,6 +4,7 @@ import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange';
 import Lotto from '../Lotto';
 import { lottoPrize } from '../constant/lotto';
 import LottoResult from '../model/LottoResult';
+import ProfitRate from '../model/Profit';
 
 export class Controller {
   constructor() {
@@ -24,7 +25,8 @@ export class Controller {
     const winningResult = lottoResult.getWinningResult();
     this.outputView.printLottoWinningResult(winningResult);
     const totalPrizeMoney = this.getSumPrizeMoney(winningResult);
-    const profit = this.getProfit(totalPrizeMoney, paidMoney);
+    const profitRate = new ProfitRate(paidMoney, totalPrizeMoney);
+    const profit = profitRate.calculateProfitRate(totalPrizeMoney, paidMoney);
     this.outputView.printProfit(profit);
   }
 
@@ -38,9 +40,5 @@ export class Controller {
   getSumPrizeMoney(winningResult) {
     const arr = Object.entries(winningResult);
     return arr.reduce((acc, value) => acc + lottoPrize[value[0]].prize * value[1], 0);
-  }
-
-  getProfit(prizeMoney, paidMoney) {
-    return (prizeMoney / paidMoney) * 100;
   }
 }
