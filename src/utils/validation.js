@@ -52,6 +52,17 @@ const checkRangeInNumbers = (numbers) => {
   }
 };
 
+export const validateBonusNumber = (bonusInput, winningNumber) => {
+  checkNumber(bonusInput, ERROR_MESSAGES.BONUS_NUMBER.NOT_A_NUMBER);
+  const bonusNumber = Number(bonusInput);
+  if (winningNumber.includes(bonusNumber)) {
+    createError(ERROR_MESSAGES.BONUS_NUMBER.DUPLICATION_NUMBER);
+  }
+  if (bonusNumber > 45 || bonusNumber < 1) {
+    createError(ERROR_MESSAGES.BONUS_NUMBER.OUT_OF_RANGE);
+  }
+};
+
 const checkNumber = (input, message) => {
   if (isNaN(input)) {
     createError(message);

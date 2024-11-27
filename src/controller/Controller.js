@@ -5,7 +5,7 @@ import Lotto from '../Lotto';
 import { lottoPrize } from '../constant/lotto.js';
 import LottoResult from '../model/LottoResult.js';
 import ProfitRate from '../model/ProfitRate.js';
-import { validatePaidMoney, validateWinningNumber } from '../utils/validation.js';
+import { validatePaidMoney } from '../utils/validation.js';
 import { INPUT_MESSAGE } from '../constant/message.js';
 
 export class Controller {
@@ -20,7 +20,7 @@ export class Controller {
     const lottos = this.createLottos(paidMoney / 1000);
     this.outputView.printLottoList(lottos);
     const winningNumber = await this.getWinningNumber();
-    const bonusNumber = await this.getBonusNumber();
+    const bonusNumber = await this.getBonusNumber(winningNumber);
     const lottoResult = new LottoResult(winningNumber, bonusNumber, lottos);
     const winningResult = lottoResult.getWinningResult();
     const profit = this.getProfit(paidMoney, winningResult);
@@ -54,8 +54,12 @@ export class Controller {
     return this.getValidatedInputWithRetry(INPUT_MESSAGE.WINNING_NUMBER, validateWinningNumber);
   }
 
-  async getBonusNumber() {
-    return this.inputView.getInput(INPUT_MESSAGE.BONUS_NUMBER);
+  async getBonusNumber(winningNumber) {
+    return this.getValidatedInputWithRetry(
+      INPUT_MESSAGE.BONUS_NUMBER,
+      validateBonusNumber,
+      winningNumber,
+    );
   }
 
   async getValidatedInputWithRetry(message, validate, winningNumber) {
