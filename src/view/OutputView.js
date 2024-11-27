@@ -44,4 +44,8 @@ export default class OutputView {
     }
     matchSummary.push(`${lottoPrize[rank].matchCount}개 일치 (${parsedMoney}원) - ${count}개`);
   }
+
+  printError(message) {
+    Console.print(message);
+  }
 }

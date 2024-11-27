@@ -1,10 +1,12 @@
-import InputView from '../view/InputView';
-import OutputView from '../view/OutputView';
-import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange';
+import InputView from '../view/InputView.js';
+import OutputView from '../view/OutputView.js';
+import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange.js';
 import Lotto from '../Lotto';
-import { lottoPrize } from '../constant/lotto';
-import LottoResult from '../model/LottoResult';
-import ProfitRate from '../model/Profit';
+import { lottoPrize } from '../constant/lotto.js';
+import LottoResult from '../model/LottoResult.js';
+import ProfitRate from '../model/ProfitRate.js';
+import { validatePaidMoney } from '../utils/validation.js';
+import { INPUT_MESSAGE } from '../constant/message.js';
 
 export class Controller {
   constructor() {
@@ -14,20 +16,22 @@ export class Controller {
 
   // eslint-disable-next-line max-lines-per-function
   async start() {
-    const paidMoney = await this.inputView.getInput('구입금액을 입력해 주세요.');
-    const lottoCount = paidMoney / 1000;
-    const lottos = this.createLottos(lottoCount);
+    const paidMoney = await this.getPaidMoney();
+    const lottos = this.createLottos(paidMoney / 1000);
     this.outputView.printLottoList(lottos);
-    const winningNumberInput = await this.inputView.getInput('\n당첨 번호를 입력해 주세요.');
-    const winningNumber = winningNumberInput.split(',').map((x) => +x);
-    const bonusNumber = await this.inputView.getInput('\n보너스 번호를 입력해 주세요.');
-    const lottoResult = new LottoResult(winningNumber, Number(bonusNumber), lottos);
+    const winningNumber = await this.getWinningNumber();
+    const bonusNumber = await this.getBonusNumber();
+    const lottoResult = new LottoResult(winningNumber, bonusNumber, lottos);
     const winningResult = lottoResult.getWinningResult();
+    const profit = this.getProfit(paidMoney, winningResult);
     this.outputView.printLottoWinningResult(winningResult);
+    this.outputView.printProfit(profit);
+  }
+
+  getProfit(paidMoney, winningResult) {
     const totalPrizeMoney = this.getSumPrizeMoney(winningResult);
     const profitRate = new ProfitRate(paidMoney, totalPrizeMoney);
-    const profit = profitRate.calculateProfitRate(totalPrizeMoney, paidMoney);
-    this.outputView.printProfit(profit);
+    return profitRate.calculateProfitRate();
   }
 
   createLottos(lottoCount) {
@@ -40,5 +44,28 @@ export class Controller {
   getSumPrizeMoney(winningResult) {
     const arr = Object.entries(winningResult);
     return arr.reduce((acc, value) => acc + lottoPrize[value[0]].prize * value[1], 0);
+  }
+
+  async getPaidMoney() {
+    return await this.getValidatedInputWithRetry(INPUT_MESSAGE.PURCHASE_PRICE, validatePaidMoney);
+  }
+
+  async getWinningNumber() {
+    return this.inputView.getInput(INPUT_MESSAGE.WINNING_NUMBER);
+  }
+
+  async getBonusNumber() {
+    return this.inputView.getInput(INPUT_MESSAGE.BONUS_NUMBER);
+  }
+
+  async getValidatedInputWithRetry(message, validate, winningNumber) {
+    try {
+      const input = await this.inputView.getInput(message);
+      validate(input, winningNumber);
+      return input;
+    } catch (error) {
+      this.outputView.printError(error.message);
+      return await this.getValidatedInputWithRetry(message, validate, winningNumber);
+    }
   }
 }
