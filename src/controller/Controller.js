@@ -5,7 +5,11 @@ import Lotto from '../Lotto';
 import { lottoPrize } from '../constant/lotto.js';
 import LottoResult from '../model/LottoResult.js';
 import ProfitRate from '../model/ProfitRate.js';
-import { validatePaidMoney } from '../utils/validation.js';
+import {
+  validatePaidMoney,
+  validateWinningNumber,
+  validateBonusNumber,
+} from '../utils/validation.js';
 import { INPUT_MESSAGE } from '../constant/message.js';
 
 export class Controller {
