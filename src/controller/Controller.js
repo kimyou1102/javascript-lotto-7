@@ -3,6 +3,7 @@ import OutputView from '../view/OutputView';
 import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange';
 import Lotto from '../Lotto';
 import { lottoPrize } from '../constant/lotto';
+import LottoResult from '../model/LottoResult';
 
 export class Controller {
   constructor() {
@@ -19,8 +20,8 @@ export class Controller {
     const winningNumberInput = await this.inputView.getInput('\n당첨 번호를 입력해 주세요.');
     const winningNumber = winningNumberInput.split(',').map((x) => +x);
     const bonusNumber = await this.inputView.getInput('\n보너스 번호를 입력해 주세요.');
-    const matchResult = this.getMatchResult(winningNumber, Number(bonusNumber), lottos);
-    const winningResult = this.getWinningResult(matchResult);
+    const lottoResult = new LottoResult(winningNumber, Number(bonusNumber), lottos);
+    const winningResult = lottoResult.getWinningResult();
     this.outputView.printLottoWinningResult(winningResult);
     const totalPrizeMoney = this.getSumPrizeMoney(winningResult);
     const profit = this.getProfit(totalPrizeMoney, paidMoney);
@@ -41,41 +42,5 @@ export class Controller {
 
   getProfit(prizeMoney, paidMoney) {
     return (prizeMoney / paidMoney) * 100;
-  }
-
-  // eslint-disable-next-line max-lines-per-function
-  getWinningResult(matchResult) {
-    const win = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-    };
-    for (let result of matchResult) {
-      if (result.matchCount < 3) continue;
-      if (result.matchCount === 6) {
-        win[1] += 1;
-        continue;
-      }
-      const rank = 8 - result.matchCount;
-      if (result.matchCount === 5 && result.bonusNumber === 1) {
-        win[2] += 1;
-        continue;
-      }
-      win[rank] += 1;
-    }
-    return win;
-  }
-
-  getMatchResult(winningNumber, bonusNumber, lottos) {
-    const matchs = [];
-    lottos.forEach((lotto) => {
-      let matchedBonusNumber = 0;
-      const matchedWinningNumber = lotto.filter((number) => winningNumber.includes(number)).length;
-      if (lotto.includes(bonusNumber)) matchedBonusNumber += 1;
-      matchs.push({ matchCount: matchedWinningNumber, bonusNumber: matchedBonusNumber });
-    });
-    return matchs;
   }
 }
