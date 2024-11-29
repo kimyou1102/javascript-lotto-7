@@ -1,10 +1,10 @@
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
-import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange.js';
 import Lotto from '../Lotto.js';
-import { lottoPrize } from '../constant/lotto.js';
 import LottoResult from '../model/LottoResult.js';
 import ProfitRate from '../model/ProfitRate.js';
+import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange.js';
+import { lottoPrize } from '../constant/lotto.js';
 import {
   validatePaidMoney,
   validateWinningNumber,
@@ -18,24 +18,40 @@ export class Controller {
     this.outputView = new OutputView();
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async start() {
     const paidMoney = await this.getPaidMoney();
-    const lottos = this.createLottos(paidMoney / 1000);
-    this.outputView.printLottoList(lottos);
-    const winningNumber = await this.getWinningNumber();
-    const bonusNumber = await this.getBonusNumber(winningNumber);
+    const lottos = this.buyLotto(paidMoney);
+    const { winningNumber, bonusNumber } = await this.getWinningNumbers();
+
     const lottoResult = new LottoResult(winningNumber, bonusNumber, lottos);
     const winningResult = lottoResult.getWinningResult();
     const profit = this.getProfit(paidMoney, winningResult);
-    this.outputView.printLottoWinningResult(winningResult);
-    this.outputView.printProfit(profit);
+    this.printStatistics(winningResult, profit);
+  }
+
+  buyLotto(paidMoney) {
+    const lottos = this.createLottos(paidMoney / 1000);
+    this.outputView.printLottoList(lottos);
+
+    return lottos;
+  }
+
+  async getWinningNumbers() {
+    const winningNumber = await this.getWinningNumber();
+    const bonusNumber = await this.getBonusNumber(winningNumber);
+
+    return { winningNumber, bonusNumber };
   }
 
   getProfit(paidMoney, winningResult) {
     const totalPrizeMoney = this.getSumPrizeMoney(winningResult);
     const profitRate = new ProfitRate(paidMoney, totalPrizeMoney);
     return profitRate.calculateProfitRate();
+  }
+
+  printStatistics(winningResult, profit) {
+    this.outputView.printLottoWinningResult(winningResult);
+    this.outputView.printProfit(profit);
   }
 
   createLottos(lottoCount) {
