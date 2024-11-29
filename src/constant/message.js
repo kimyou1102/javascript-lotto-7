@@ -18,6 +18,7 @@ export const ERROR_MESSAGES = {
     NOT_A_NUMBER: '보너스 번호는 숫자로 입력해야 합니다.',
   },
   LOTTO: {
+    INVALID_COUNT: '로또 번호는 6개여야 합니다.',
     NOT_A_NUMBER: '로또 번호는 숫자여야 합니다.',
     DUPLICATION_NUMBER: '로또 번호는 중복되지 않은 숫자여야 합니다.',
     OUT_OF_RANGE: '로또 번호는 1부터 45 사이의 숫자여야 합니다.',
