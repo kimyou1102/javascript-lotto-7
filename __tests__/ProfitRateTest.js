@@ -1,4 +1,4 @@
-import ProfitRate from '../src/model/Profit';
+import ProfitRate from '../src/model/ProfitRate';
 
 describe('로또 클래스 테스트', () => {
   test('수익률을 계산한다.', () => {
