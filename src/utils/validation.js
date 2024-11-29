@@ -2,8 +2,13 @@ import { ERROR_MESSAGES } from '../constant/message.js';
 import { createError } from './createError.js';
 
 export const validatePaidMoney = (input) => {
+  checkEmpty(input);
   checkNumber(input, ERROR_MESSAGES.PURCHASE_PRICE.NOT_A_NUMBER);
   const money = Number(input);
+  checkMoney(money);
+};
+
+const checkMoney = (money) => {
   if (money < 1000) {
     createError(ERROR_MESSAGES.PURCHASE_PRICE.MIN_INPUT);
   }
@@ -13,6 +18,7 @@ export const validatePaidMoney = (input) => {
 };
 
 export const validateWinningNumber = (input) => {
+  checkEmpty(input);
   checkInput(input);
   const numbers = input.split(',').map((x) => +x);
   checkCount(numbers, ERROR_MESSAGES.WINNING_NUMBER.INVALID_COUNT);
@@ -26,6 +32,12 @@ export const validateLottoNumber = (numbers) => {
   checkNumbers(numbers, ERROR_MESSAGES.LOTTO.NOT_A_NUMBER);
   checkDuplication(numbers, ERROR_MESSAGES.LOTTO.DUPLICATION_NUMBER);
   checkRangeInNumbers(numbers, ERROR_MESSAGES.LOTTO.OUT_OF_RANGE);
+};
+
+const checkEmpty = (input) => {
+  if (input === '' || input === undefined || input === null) {
+    createError(ERROR_MESSAGES.EMPTY_INPUT);
+  }
 };
 
 const checkInput = (input) => {
@@ -60,14 +72,13 @@ const checkRangeInNumbers = (numbers, message) => {
 };
 
 export const validateBonusNumber = (bonusInput, winningNumber) => {
+  checkEmpty(bonusInput);
   checkNumber(bonusInput, ERROR_MESSAGES.BONUS_NUMBER.NOT_A_NUMBER);
   const bonusNumber = Number(bonusInput);
   if (winningNumber.includes(bonusNumber)) {
     createError(ERROR_MESSAGES.BONUS_NUMBER.DUPLICATION_NUMBER);
   }
-  if (bonusNumber > 45 || bonusNumber < 1) {
-    createError(ERROR_MESSAGES.BONUS_NUMBER.OUT_OF_RANGE);
-  }
+  checkRangeInNumbers([bonusNumber], ERROR_MESSAGES.BONUS_NUMBER.OUT_OF_RANGE);
 };
 
 const checkNumber = (input, message) => {
