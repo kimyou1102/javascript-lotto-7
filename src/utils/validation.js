@@ -35,7 +35,7 @@ export const validateLottoNumber = (numbers) => {
 };
 
 const checkEmpty = (input) => {
-  if (input === '' || input === undefined || input === null) {
+  if (String(input).trim() === '' || input === undefined || input === null) {
     createError(ERROR_MESSAGES.EMPTY_INPUT);
   }
 };
