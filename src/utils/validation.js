@@ -15,10 +15,17 @@ export const validatePaidMoney = (input) => {
 export const validateWinningNumber = (input) => {
   checkInput(input);
   const numbers = input.split(',').map((x) => +x);
-  checkCount(numbers);
-  checkNumbers(numbers);
-  checkRangeInNumbers(numbers);
-  checkDuplication(numbers);
+  checkCount(numbers, ERROR_MESSAGES.WINNING_NUMBER.INVALID_COUNT);
+  checkNumbers(numbers, ERROR_MESSAGES.WINNING_NUMBER.NOT_A_NUMBER);
+  checkRangeInNumbers(numbers, ERROR_MESSAGES.WINNING_NUMBER.OUT_OF_RANGE);
+  checkDuplication(numbers, ERROR_MESSAGES.WINNING_NUMBER.DUPLICATION_NUMBER);
+};
+
+export const validateLottoNumber = (numbers) => {
+  checkCount(numbers, ERROR_MESSAGES.LOTTO.INVALID_COUNT);
+  checkNumbers(numbers, ERROR_MESSAGES.LOTTO.NOT_A_NUMBER);
+  checkDuplication(numbers, ERROR_MESSAGES.LOTTO.DUPLICATION_NUMBER);
+  checkRangeInNumbers(numbers, ERROR_MESSAGES.LOTTO.OUT_OF_RANGE);
 };
 
 const checkInput = (input) => {
@@ -28,27 +35,27 @@ const checkInput = (input) => {
   }
 };
 
-const checkCount = (numbers) => {
+const checkCount = (numbers, message) => {
   if (numbers.length !== 6) {
-    createError(ERROR_MESSAGES.WINNING_NUMBER.INVALID_COUNT);
+    createError(message);
   }
 };
 
-const checkDuplication = (numbers) => {
+const checkDuplication = (numbers, message) => {
   if (new Set(numbers).size !== numbers.length) {
-    createError(ERROR_MESSAGES.WINNING_NUMBER.DUPLICATION_NUMBER);
+    createError(message);
   }
 };
 
-const checkNumbers = (numbers) => {
+const checkNumbers = (numbers, message) => {
   if (numbers.some((number) => isNaN(number))) {
-    createError(ERROR_MESSAGES.WINNING_NUMBER.NOT_A_NUMBER);
+    createError(message);
   }
 };
 
-const checkRangeInNumbers = (numbers) => {
+const checkRangeInNumbers = (numbers, message) => {
   if (numbers.some((number) => number > 45 || number < 1)) {
-    createError(ERROR_MESSAGES.WINNING_NUMBER.OUT_OF_RANGE);
+    createError(message);
   }
 };
 
