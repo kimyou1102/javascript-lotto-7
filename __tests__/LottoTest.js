@@ -19,24 +19,24 @@ describe('로또 클래스 테스트', () => {
   test('로또 번호가 6개가 아닐 경우 예외가 발생한다.', () => {
     expect(() => {
       new Lotto([1, 2, 3, 4, 5]);
-    }).toThrow(ERROR_MESSAGES.LOTTO.INVALID_COUNT);
+    }).toThrow(ERROR_MESSAGES.lotto.invalidCount);
   });
 
   test('로또 번호가 숫자가 아닐 경우 예외가 발생한다.', () => {
     expect(() => {
       new Lotto([1, 2, 3, 4, 5, '*']);
-    }).toThrow(ERROR_MESSAGES.LOTTO.NOT_A_NUMBER);
+    }).toThrow(ERROR_MESSAGES.lotto.notANumber);
   });
 
   test('로또 번호가 중복될 경우 예외가 발생한다.', () => {
     expect(() => {
       new Lotto([1, 2, 3, 4, 5, 5]);
-    }).toThrow(ERROR_MESSAGES.LOTTO.DUPLICATION_NUMBER);
+    }).toThrow(ERROR_MESSAGES.lotto.duplicationNumber);
   });
 
   test('로또 번호가 1에서 45사이의 숫자가 아닐 경우 예외가 발생한다.', () => {
     expect(() => {
       new Lotto([1, 2, 3, 4, 5, 50]);
-    }).toThrow(ERROR_MESSAGES.LOTTO.OUT_OF_RANGE);
+    }).toThrow(ERROR_MESSAGES.lotto.outOfRange);
   });
 });

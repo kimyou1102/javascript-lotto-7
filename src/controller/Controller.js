@@ -4,7 +4,7 @@ import Lotto from '../Lotto.js';
 import LottoResult from '../model/LottoResult.js';
 import ProfitRate from '../model/ProfitRate.js';
 import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange.js';
-import { lottoPrize } from '../constant/lotto.js';
+import { LOTTO_PRIZE } from '../constant/lotto.js';
 import {
   validatePaidMoney,
   validateWinningNumber,
@@ -63,20 +63,20 @@ export class Controller {
 
   getSumPrizeMoney(winningResult) {
     const winningResultArr = Object.entries(winningResult);
-    return winningResultArr.reduce((acc, value) => acc + lottoPrize[value[0]].prize * value[1], 0);
+    return winningResultArr.reduce((acc, value) => acc + LOTTO_PRIZE[value[0]].prize * value[1], 0);
   }
 
   async getPaidMoney() {
-    return await this.getValidatedInputWithRetry(INPUT_MESSAGE.PURCHASE_PRICE, validatePaidMoney);
+    return await this.getValidatedInputWithRetry(INPUT_MESSAGE.purchasePrice, validatePaidMoney);
   }
 
   async getWinningNumber() {
-    return this.getValidatedInputWithRetry(INPUT_MESSAGE.WINNING_NUMBER, validateWinningNumber);
+    return this.getValidatedInputWithRetry(INPUT_MESSAGE.winningNumber, validateWinningNumber);
   }
 
   async getBonusNumber(winningNumber) {
     return this.getValidatedInputWithRetry(
-      INPUT_MESSAGE.BONUS_NUMBER,
+      INPUT_MESSAGE.bonusNumber,
       validateBonusNumber,
       winningNumber,
     );

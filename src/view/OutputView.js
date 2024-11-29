@@ -1,12 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-
-const lottoPrize = {
-  1: { matchCount: 6, prize: 2_000_000_000 },
-  2: { matchCount: 5, prize: 30_000_000 },
-  3: { matchCount: 5, prize: 1_500_000 },
-  4: { matchCount: 4, prize: 50000 },
-  5: { matchCount: 3, prize: 5000 },
-};
+import { LOTTO_PRIZE } from '../constant/lotto';
 
 export default class OutputView {
   printLottoList(lottos) {
@@ -35,14 +28,14 @@ export default class OutputView {
   }
 
   pushMatchSummary(rank, count, matchSummary) {
-    const parsedMoney = lottoPrize[rank].prize.toLocaleString('ko-KR');
+    const parsedMoney = LOTTO_PRIZE[rank].prize.toLocaleString('ko-KR');
     if (rank === '2') {
       matchSummary.push(
-        `${lottoPrize[rank].matchCount}개 일치, 보너스 볼 일치 (${parsedMoney}원) - ${count}개`,
+        `${LOTTO_PRIZE[rank].matchCount}개 일치, 보너스 볼 일치 (${parsedMoney}원) - ${count}개`,
       );
       return;
     }
-    matchSummary.push(`${lottoPrize[rank].matchCount}개 일치 (${parsedMoney}원) - ${count}개`);
+    matchSummary.push(`${LOTTO_PRIZE[rank].matchCount}개 일치 (${parsedMoney}원) - ${count}개`);
   }
 
   printError(message) {
