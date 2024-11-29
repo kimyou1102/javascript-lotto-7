@@ -62,8 +62,8 @@ export class Controller {
   }
 
   getSumPrizeMoney(winningResult) {
-    const arr = Object.entries(winningResult);
-    return arr.reduce((acc, value) => acc + lottoPrize[value[0]].prize * value[1], 0);
+    const winningResultArr = Object.entries(winningResult);
+    return winningResultArr.reduce((acc, value) => acc + lottoPrize[value[0]].prize * value[1], 0);
   }
 
   async getPaidMoney() {
