@@ -1,5 +1,6 @@
 import { ERROR_MESSAGES } from '../constant/message.js';
 import { createError } from './createError.js';
+import { LOTTO } from '../constant/lotto.js';
 
 export const validatePaidMoney = (input) => {
   checkEmpty(input);
@@ -9,10 +10,10 @@ export const validatePaidMoney = (input) => {
 };
 
 const checkMoney = (money) => {
-  if (money < 1000) {
+  if (money < LOTTO.LOTTO_PRICE) {
     createError(ERROR_MESSAGES.purchasePrice.minInput);
   }
-  if (money % 1000 !== 0) {
+  if (money % LOTTO.LOTTO_PRICE !== 0) {
     createError(ERROR_MESSAGES.purchasePrice.invalidUnit);
   }
 };
@@ -47,7 +48,7 @@ const checkInput = (input) => {
 };
 
 const checkCount = (numbers, message) => {
-  if (numbers.length !== 6) {
+  if (numbers.length !== LOTTO.LOTTO_NUMBER_COUNT) {
     createError(message);
   }
 };
@@ -65,7 +66,11 @@ const checkNumbers = (numbers, message) => {
 };
 
 const checkRangeInNumbers = (numbers, message) => {
-  if (numbers.some((number) => number > 45 || number < 1)) {
+  if (
+    numbers.some(
+      (number) => number > LOTTO.LOTTO_NUMBER_RANGE_MAX || number < LOTTO.LOTTO_NUMBER_RANGE_MIN,
+    )
+  ) {
     createError(message);
   }
 };

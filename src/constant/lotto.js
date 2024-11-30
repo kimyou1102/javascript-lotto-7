@@ -15,3 +15,11 @@ export const LOTTO_RANK = deepFreeze({
   4: 0,
   5: 0,
 });
+
+export const LOTTO = {
+  LOTTO_PRICE: 1000,
+  LOTTO_NUMBER_COUNT: 6,
+  LOTTO_NUMBER_RANGE_MIN: 1,
+  LOTTO_NUMBER_RANGE_MAX: 45,
+  LOTTO_NUMBER_SEPARATOR: ',',
+};
