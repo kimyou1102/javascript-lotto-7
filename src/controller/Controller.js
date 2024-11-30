@@ -4,7 +4,7 @@ import Lotto from '../Lotto.js';
 import LottoResult from '../model/LottoResult.js';
 import ProfitRate from '../model/ProfitRate.js';
 import { getUniqueNumbersInRange } from '../utils/getUniqueNumbersInRange.js';
-import { LOTTO_PRIZE } from '../constant/lotto.js';
+import { LOTTO_PRIZE, LOTTO } from '../constant/lotto.js';
 import {
   validatePaidMoney,
   validateWinningNumber,
@@ -30,15 +30,16 @@ export class Controller {
   }
 
   buyLotto(paidMoney) {
-    const lottos = this.createLottos(paidMoney / 1000);
+    const lottos = this.createLottos(paidMoney / LOTTO.LOTTO_PRICE);
     this.outputView.printLottoList(lottos);
 
     return lottos;
   }
 
   async getWinningNumbers() {
-    const winningNumber = await this.getWinningNumber();
+    const winningNumberInput = await this.getWinningNumber();
     const bonusNumber = await this.getBonusNumber(winningNumber);
+    const winningNumber = winningNumberInput.split(',');
 
     return { winningNumber, bonusNumber };
   }
