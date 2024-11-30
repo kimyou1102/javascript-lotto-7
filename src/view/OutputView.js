@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { LOTTO_PRIZE } from '../constant/lotto';
+import { LOTTO_PRIZE } from '../constant/lotto.js';
 
 export default class OutputView {
   printLottoList(lottos) {
